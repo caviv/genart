@@ -24,13 +24,18 @@
 				baseLine:      500,               // where the first line of building is
 				baseLineAdd:    100,               // next building line add to baseLine
 				buildingLines: ['#777', '#555', '#222'],  // color of building for each line (also the number of lines of buildings)
+				buidlingMargin: [-10, 10],    // margin between buildings min, max
+				buidlingWidth:  [40, 200],  // building width min, max
+				buidlingHeight: [100, 500], // building height min, max
 
 				// windows
 				windowsColors: ["transparent", "yellow", "#efff73", "ddd"],
-				wh: 7, // window height
+				wh: 5, // window height
         		ww: 3, // window width
         		whm: 7, // window height margin
         		wwm: 7, // window width margin
+
+
 			}
 
 			function pageloaded(){
@@ -48,11 +53,13 @@
 
 				// first line of buildings
 				for(let l = 0; l < config.buildingLines.length; l++) {
-					let x = Rand(0, 20);
+					let x = Rand(config.buidlingMargin[0], config.buidlingMargin[1]);
 					while(x < 1400) {
-						let b = new Building(config.baseLine + l * config.baseLineAdd, x, Rand(40, 200), Rand(100, 400), config.buildingLines[l]);
+						let width  = Rand(config.buidlingWidth[0], config.buidlingWidth[1]);
+						let height = Rand(config.buidlingHeight[0], config.buidlingHeight[1]);
+						let b = new Building(config.baseLine + l * config.baseLineAdd, x, width, height, config.buildingLines[l]);
 						b.draw(ctx);
-						x += Rand(0, 100);
+						x += width + Rand(config.buidlingMargin[0], config.buidlingMargin[1]);
 					}
 				}
 			}
