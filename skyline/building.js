@@ -8,26 +8,20 @@ class Building {
     }
 
     draw(ctx) {
-        const windowsColors = ["transparent", "yellow", "#efff73", "ddd"];
+        
 
         ctx.beginPath();
         ctx.fillStyle = this.color;
         ctx.fillRect(this.left, this.baseline - this.height, this.width, this.height);
         ctx.closePath();
 
-        // draw windows
-        let wh = 7; // window height
-        let ww = 7; // window width
-        let whm = 5; // window height margin
-        let wwm = 5; // window width margin
-
         // lines of windows - starting from top left to bottom
-        for(let h = this.baseline - this.height + whm; h < this.baseline - whm; h += wh + whm) {
+        for(let h = this.baseline - this.height + config.whm; h < this.baseline - config.whm; h += config.wh + config.whm) {
             // each line
-            for (let w = this.left + wwm; w < this.left + this.width - wwm; w += ww + wwm) {
+            for (let w = this.left + config.wwm; w < this.left + this.width - config.wwm; w += config.ww + config.wwm) {
                 ctx.beginPath();
-                ctx.fillStyle = windowsColors[getRandomInt(windowsColors.length)];
-                ctx.fillRect(w, h, ww, wh);
+                ctx.fillStyle = config.windowsColors[getRandomInt(config.windowsColors.length)];
+                ctx.fillRect(w, h, config.ww, config.wh);
                 ctx.closePath();
             }
         }

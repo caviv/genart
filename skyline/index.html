@@ -19,6 +19,20 @@
 				return Math.floor(Math.random() * (max - min + 1)) + min;
 			}
 
+			let config = {
+				// buildings
+				baseLine:      500,               // where the first line of building is
+				baseLineAdd:    100,               // next building line add to baseLine
+				buildingLines: ['#777', '#555', '#222'],  // color of building for each line (also the number of lines of buildings)
+
+				// windows
+				windowsColors: ["transparent", "yellow", "#efff73", "ddd"],
+				wh: 7, // window height
+        		ww: 3, // window width
+        		whm: 7, // window height margin
+        		wwm: 7, // window width margin
+			}
+
 			function pageloaded(){
 				//get a handle for the canvas object
 				var canvas = document.getElementById("maincanvas");
@@ -33,19 +47,13 @@
 				// b2.draw(ctx);
 
 				// first line of buildings
-				let x = Rand(0, 20);
-				while(x < 1400) {
-					let b = new Building(600, x, Rand(40, 200), Rand(100, 400), '#666');
-					b.draw(ctx);
-					x += Rand(0, 100);
-				}
-
-				// second line of buildings
-				x = Rand(0, 20);
-				while(x < 1400) {
-					let b = new Building(650, x, Rand(40, 200), Rand(100, 300), '#333');
-					b.draw(ctx);
-					x += Rand(0, 100);
+				for(let l = 0; l < config.buildingLines.length; l++) {
+					let x = Rand(0, 20);
+					while(x < 1400) {
+						let b = new Building(config.baseLine + l * config.baseLineAdd, x, Rand(40, 200), Rand(100, 400), config.buildingLines[l]);
+						b.draw(ctx);
+						x += Rand(0, 100);
+					}
 				}
 			}
 		</script>
