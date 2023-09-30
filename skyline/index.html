@@ -23,7 +23,8 @@
 				// buildings
 				baseLine:      500,               // where the first line of building is
 				baseLineAdd:    100,               // next building line add to baseLine
-				buildingLines: ['#777', '#555', '#222'],  // color of building for each line (also the number of lines of buildings)
+				buildingLines: ['#666', '#444', '#222'],  // color of building for each line (also the number of lines of buildings)
+				//buildingLines: ['#222', '#555', '#777'],  // color of building for each line (also the number of lines of buildings)
 				buidlingMargin: [-10, 10],    // margin between buildings min, max
 				buidlingWidth:  [40, 200],  // building width min, max
 				buidlingHeight: [100, 500], // building height min, max
@@ -35,12 +36,17 @@
         		whm: 7, // window height margin
         		wwm: 7, // window width margin
 
+        		// background
+        		background: 'black',
+        		backgroundImg: 'linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12)', // "url('sky.jpg')",
 
 			}
 
 			function pageloaded(){
 				//get a handle for the canvas object
 				var canvas = document.getElementById("maincanvas");
+				canvas.style.background = config.background;
+				canvas.style.backgroundImage = config.backgroundImg;
 				
 				// Get the 2d context for this canvas
 				var ctx = canvas.getContext("2d");
@@ -66,7 +72,7 @@
 		</script>
 	</head>
 	<body onload="pageloaded();">
-	<canvas width="1400" height="800" id="maincanvas" style="border: 1px solid black; background-image: url('sky.jpg');">
+	<canvas width="1400" height="800" id="maincanvas" style="border: 1px solid black;">
 	</canvas>
 	</body>
 </html>
