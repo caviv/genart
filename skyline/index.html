@@ -1,84 +1,57 @@
-<!DOCOTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
 		<meta http-equiv="Content_type" content="text/html; charset=utf-8">
-		<title>New HTML5 File</title>
-		<script type="text/javascript">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="application-name" content="Genart City Skyline">
+		<meta name="description" content="Genart City Skyline">
+		<!-- meta name="application-url" content="https://mail.google.com/mail/u/0/" -->
+		<!-- link rel="shortcut icon" href="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico" type="image/x-icon" -->
+		<!-- link rel="manifest" href="/mail/manifest.json" crossorigin="use-credentials" -->
+		<title>Genart City Skyline</title>
+		<script src="building.js"></script>
+		<script>
+			function getRandomInt(max) {
+				return Math.floor(Math.random() * Math.floor(max));
+			}
+
+			function Rand(min, max) {
+				return Math.floor(Math.random() * (max - min + 1)) + min;
+			}
+
 			function pageloaded(){
 				//get a handle for the canvas object
-				var canvas = document.getElementById("testcanvas");
+				var canvas = document.getElementById("maincanvas");
 				
 				// Get the 2d context for this canvas
-				var context = canvas.getContext("2d");
+				var ctx = canvas.getContext("2d");
 				
-				//drawBuilding(context, 100, 200, 400, "black");
-				//drawBuilding(context, 250, 300, 500, "black");
+				// let b1 = new Building(600, 100, 200, 400, 'black');
+				// b1.draw(ctx);
 
-				for (let x = 0; x < 1400; x+=250) {
-					var height = 400 - getRandomInt(300);
-					var width = 90 + getRandomInt(100);
-					drawBuilding(context, x, x + width, height, "#ccc");
+				// let b2 = new Building(700, 400, 100, 300, 'black');
+				// b2.draw(ctx);
+
+				// first line of buildings
+				let x = Rand(0, 20);
+				while(x < 1400) {
+					let b = new Building(600, x, Rand(40, 200), Rand(100, 400), '#666');
+					b.draw(ctx);
+					x += Rand(0, 100);
 				}
 
-				for (let x = 0; x < 1400; x+=220) {
-					var height = 500 - getRandomInt(300);
-					var width = 100 + getRandomInt(100);
-					drawBuilding(context, x, x + width, height, "#aaa");
-
-					/*context.beginPath();
-					context.fillStyle = "#ccc";
-					context.fillRect(x + 20, height + 20, 40, 20);
-					context.closePath();*/
+				// second line of buildings
+				x = Rand(0, 20);
+				while(x < 1400) {
+					let b = new Building(650, x, Rand(40, 200), Rand(100, 300), '#333');
+					b.draw(ctx);
+					x += Rand(0, 100);
 				}
-
-				for (let x = 0; x < 1400; x+=150) {
-					var height = 700 - getRandomInt(300);
-					var width = 130 + getRandomInt(100);
-					drawBuilding(context, x, x + width, height, "#888");
-
-					/*context.beginPath();
-					context.fillStyle = "#bbb";
-					context.fillRect(x + 20, height + 20, 40, 20);
-					context.closePath();*/
-				}
-			}
-
-			function drawBuilding(context, x1, x2, height, color) {
-				context.beginPath();
-				context.fillStyle = color;
-				context.fillRect(x1, height, x2 - x1, 800 - height);
-				context.closePath();
-				for(let h = 0; h < 800 - height - 40; h += 40) {
-					for (let i = 0; i < x2 - x1 - 50; i += 50) {
-						let randomcolor = getRandomInt(4);
-						if (randomcolor == 0) {
-							windowcolor = "#efff73"
-						}
-						if (randomcolor == 1) {
-							windowcolor = "#efff73"
-						}
-						if (randomcolor == 2) {
-							windowcolor = "#efff73"
-						}
-						if (randomcolor == 3) {
-							windowcolor = "#ddd"
-						}
-
-							context.beginPath();
-							context.fillStyle = windowcolor;
-							context.fillRect(x1 + 20 + i, height + 20 + h, 30, 20);
-							context.closePath();
-						}
-				}
-			}
-			
-			function getRandomInt(max) {
-			  return Math.floor(Math.random() * Math.floor(max));
 			}
 		</script>
 	</head>
 	<body onload="pageloaded();">
-	<canvas width="1400" height="800" id="testcanvas" style="border: 1px solid black; background-image: url('sky.jpg');">
+	<canvas width="1400" height="800" id="maincanvas" style="border: 1px solid black; background-image: url('sky.jpg');">
 	</canvas>
 	</body>
 </html>
