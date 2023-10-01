@@ -28,10 +28,6 @@ function xoshiro128ss(a, b, c, d) {
     }
 }
 
-// generate random
-let seed = cyrb128(Math.random() + '');
-let random = xoshiro128ss(seed[0], seed[2], seed[2], seed[3]);
-
 function getRandomInt(max) {
 	return Math.floor(random() * Math.floor(max));
 }

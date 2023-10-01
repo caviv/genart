@@ -12,11 +12,20 @@
 		<script src="random.js"></script>
 		<script src="building.js"></script>
 		<script>
+			function $$(id) {return document.getElementById(id);}
+			
+			// generate random
+			let seedtext = Math.random() + ''; 
+			let seed = cyrb128(seedtext);
+			let random = xoshiro128ss(seed[0], seed[2], seed[2], seed[3]);
+
+			let objects = [];   // holds all objects
+
 			let config = {
 				// buildings
-				baseLine:      500,               // where the first line of building is
+				baseLine:       500,               // where the first line of building is
 				baseLineAdd:    100,               // next building line add to baseLine
-				buildingLines: ['#666', '#444', '#222'],  // color of building for each line (also the number of lines of buildings)
+				buildingLines:  ['#666', '#444', '#222'],  // color of building for each line (also the number of lines of buildings)
 				//buildingLines: ['#222', '#555', '#777'],  // color of building for each line (also the number of lines of buildings)
 				buidlingMargin: [-10, 10],    // margin between buildings min, max
 				buidlingWidth:  [40, 200],  // building width min, max
@@ -33,10 +42,40 @@
         		background: 'black',
         		backgroundImg: 'linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12)',
         		//backgroundImg: "url('sky.jpg')",
+			}
+
+
+			function rebuildConfig() {
+				if(!config.seed) {
+					$$('seed').value = seedtext;
+				}
+
+				seedtext = $$('seed').value;
+				config.ww = parseInt(document.querySelector('#datainput [name="window-width"]').value);
+				config.wh = parseInt(document.querySelector('#datainput [name="window-height"]').value);
+
+				return config;
+			}
+
+
+			function generateObjects() {
+				// lines of buildings
+				for(let l = 0; l < config.buildingLines.length; l++) {
+					let x = Rand(config.buidlingMargin[0], config.buidlingMargin[1]);
+					while(x < 1400) {
+						let width  = Rand(config.buidlingWidth[0], config.buidlingWidth[1]);
+						let height = Rand(config.buidlingHeight[0], config.buidlingHeight[1]);
+						objects.push(new Building(config.baseLine + l * config.baseLineAdd, x, width, height, config.buildingLines[l]));
+						x += width + Rand(config.buidlingMargin[0], config.buidlingMargin[1]);
+					}
+				}
 
 			}
 
-			function pageloaded(){
+
+			function drawAll() {
+				config = rebuildConfig();
+
 				//get a handle for the canvas object
 				var canvas = document.getElementById("maincanvas");
 				canvas.style.background = config.background;
@@ -44,29 +83,40 @@
 				
 				// Get the 2d context for this canvas
 				var ctx = canvas.getContext("2d");
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				
 				// let b1 = new Building(600, 100, 200, 400, 'black');
 				// b1.draw(ctx);
 
 				// let b2 = new Building(700, 400, 100, 300, 'black');
 				// b2.draw(ctx);
-
-				// first line of buildings
-				for(let l = 0; l < config.buildingLines.length; l++) {
-					let x = Rand(config.buidlingMargin[0], config.buidlingMargin[1]);
-					while(x < 1400) {
-						let width  = Rand(config.buidlingWidth[0], config.buidlingWidth[1]);
-						let height = Rand(config.buidlingHeight[0], config.buidlingHeight[1]);
-						let b = new Building(config.baseLine + l * config.baseLineAdd, x, width, height, config.buildingLines[l]);
-						b.draw(ctx);
-						x += width + Rand(config.buidlingMargin[0], config.buidlingMargin[1]);
-					}
+				for(let i = 0; i < objects.length; i++) {
+					objects[i].draw(ctx);
 				}
 			}
+
+			function pageloaded() {
+				generateObjects();
+				drawAll();
+			}
+
+
 		</script>
+		<style>
+			.datainput label {display: block;}
+		</style>
 	</head>
 	<body onload="pageloaded();">
-	<canvas width="1400" height="800" id="maincanvas" style="border: 1px solid black;">
-	</canvas>
+		<h1>GenArt Skyline City Generator</h1>
+		<main>
+			<canvas width="1400" height="800" id="maincanvas" style="border: 1px solid black;"></canvas>
+			<div>
+				<form id="datainput" class="datainput">
+					<label>Seed: <input type="text" name="seed" id="seed" value="" /></label>
+					<label>Window width: <input type="range" name="window-width" min="0" max="10" value="3" step="1" onchange="drawAll(); $$('window-width').innerHTML=this.value;" /> <span id="window-width">3</span></label>
+					<label>Window height: <input type="range" name="window-height" min="0" max="10" value="5" step="1" onchange="drawAll(); $$('window-height').innerHTML=this.value;" /> <span id="window-height">5</span></label>
+				</form>
+			</div>
+		</main>
 	</body>
 </html>
