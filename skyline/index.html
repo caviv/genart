@@ -9,6 +9,7 @@
 		<!-- link rel="shortcut icon" href="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico" type="image/x-icon" -->
 		<!-- link rel="manifest" href="/mail/manifest.json" crossorigin="use-credentials" -->
 		<title>Genart City Skyline</title>
+		<script src="tinycolor.js"></script>
 		<script src="random.js"></script>
 		<script src="building.js"></script>
 		<script>
@@ -23,13 +24,13 @@
 
 			let config = {
 				// buildings
-				baseLine:       500,               // where the first line of building is
-				baseLineAdd:    100,               // next building line add to baseLine
+				baseLine:       700,               // where the first line of building is
+				baseLineAdd:    40,               // next building line add to baseLine
 				buildingLines:  ['#666', '#444', '#222'],  // color of building for each line (also the number of lines of buildings)
 				//buildingLines: ['#222', '#555', '#777'],  // color of building for each line (also the number of lines of buildings)
 				buidlingMargin: [-10, 10],    // margin between buildings min, max
 				buidlingWidth:  [40, 200],  // building width min, max
-				buidlingHeight: [100, 500], // building height min, max
+				buidlingHeight: [100, 600], // building height min, max
 
 				// windows
 				windowsColors: ["transparent", "yellow", "#efff73", "#555"],
@@ -51,6 +52,8 @@
 				}
 
 				seedtext = $$('seed').value;
+				
+
 				config.ww = parseInt(document.querySelector('#datainput [name="window-width"]').value);
 				config.wh = parseInt(document.querySelector('#datainput [name="window-height"]').value);
 
@@ -60,12 +63,18 @@
 
 			function generateObjects() {
 				// lines of buildings
+				let color = tinycolor({ r: 90, g: 90, b: 90 });
+				//let color = tinycolor("magenta");
 				for(let l = 0; l < config.buildingLines.length; l++) {
+					color = color.darken();
 					let x = Rand(config.buidlingMargin[0], config.buidlingMargin[1]);
 					while(x < 1400) {
 						let width  = Rand(config.buidlingWidth[0], config.buidlingWidth[1]);
 						let height = Rand(config.buidlingHeight[0], config.buidlingHeight[1]);
-						objects.push(new Building(config.baseLine + l * config.baseLineAdd, x, width, height, config.buildingLines[l]));
+						let bline  = config.baseLine - (config.buildingLines.length - l - 1) * config.baseLineAdd;
+						//objects.push(new Building(bline, x, width, height, config.buildingLines[l], l));
+						objects.push(new Building(bline, x, width, height, color.toHexString(), l));
+						
 						x += width + Rand(config.buidlingMargin[0], config.buidlingMargin[1]);
 					}
 				}
@@ -93,6 +102,12 @@
 				for(let i = 0; i < objects.length; i++) {
 					objects[i].draw(ctx);
 				}
+
+				// draw road
+				ctx.beginPath();
+		        ctx.fillStyle = 'black';
+		        ctx.fillRect(0, config.baseLine, 1400, 800 - config.baseLine);
+		        ctx.closePath();
 			}
 
 			function pageloaded() {
@@ -107,16 +122,34 @@
 		</style>
 	</head>
 	<body onload="pageloaded();">
-		<h1>GenArt Skyline City Generator</h1>
+		<h1>Genart Skyline City Generator</h1>
 		<main>
-			<canvas width="1400" height="800" id="maincanvas" style="border: 1px solid black;"></canvas>
-			<div>
-				<form id="datainput" class="datainput">
-					<label>Seed: <input type="text" name="seed" id="seed" value="" /></label>
-					<label>Window width: <input type="range" name="window-width" min="0" max="10" value="3" step="1" onchange="drawAll(); $$('window-width').innerHTML=this.value;" /> <span id="window-width">3</span></label>
-					<label>Window height: <input type="range" name="window-height" min="0" max="10" value="5" step="1" onchange="drawAll(); $$('window-height').innerHTML=this.value;" /> <span id="window-height">5</span></label>
-				</form>
-			</div>
+			<section>
+				<canvas width="1400" height="800" id="maincanvas" style="border: 1px solid black;"></canvas>
+				<div>
+					<form id="datainput" class="datainput">
+						<label>Seed: <input type="text" name="seed" id="seed" value="" /></label>
+						<label>Window width: <input type="range" name="window-width" min="0" max="10" value="3" step="1" onchange="drawAll(); $$('window-width').innerHTML=this.value;" /> <span id="window-width">3</span></label>
+						<label>Window height: <input type="range" name="window-height" min="0" max="10" value="5" step="1" onchange="drawAll(); $$('window-height').innerHTML=this.value;" /> <span id="window-height">5</span></label>
+					</form>
+				</div>
+			</section>
+
+			<section>
+				<h2>I don't know how to draw</h2>
+				<p>
+					This project of genart (generative art) <a href="https://www.cnaanaviv.com/genart/skyline">City Skyline Generator</a> was done as a learning project for using javascript and the canvas element in html together with my son <a href="https://github.com/shtivaerev">(shtivaerev)</a> and you can find it on github under <a href="https://github.com/caviv/genart">genart</a>.
+				</p>
+				<p>
+					I created this project because "I don't know how to draw" and I really like the dystopian look of cities. We are currently working on more projects under the idea and although genAI (generative artificial intelligence) and other projects like Midjourney and Dall-E are doing a much better job, it is still fun to develop. 
+				</p>
+				<p>
+					We are working on more projects under the <a href="https://www.cnaanaviv.com/genart">genart</a> section and "I don't know how to draw section" and we intend to improve this one as well. So if you feel like it, follow the project on github and you can add more.
+				</p>
+				<p>
+					<a href="https://www.cnaanaviv.com">Cnaan Aviv</a>
+				</p>
+			</section>
 		</main>
 	</body>
 </html>

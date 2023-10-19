@@ -1,16 +1,28 @@
 class Building {
-    constructor(baseline, left, width, height, color) {
+    constructor(baseline, left, width, height, color, line) {
         this.baseline = baseline;
         this.left = left;
         this.width = width;
         this.height = height;
         this.color = color;
+        this.line = line;
     }
 
     draw(ctx) {
-        
-
+        // let alpha = 1;
+        // switch(this.line) {
+        //     case 0:
+        //         alpha = 0.5;
+        //         break;
+        //     case 1:
+        //         alpha = 0.7;
+        //         break;
+        //     case 2:
+        //         alpha = 1;
+        //         break;
+        // }
         ctx.beginPath();
+        //ctx.fillStyle = `rgba(50, 50, 50, ${alpha})`;
         ctx.fillStyle = this.color;
         ctx.fillRect(this.left, this.baseline - this.height, this.width, this.height);
         ctx.closePath();
